@@ -1,4 +1,4 @@
-insert into surveys (survey_name)
-values ($1)
+insert into surveys (survey_name, date)
+values ($1, $2)
 
 returning *

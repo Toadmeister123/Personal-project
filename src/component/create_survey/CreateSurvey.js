@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import Question from '../question/Question'
+import Answer from '../answer/Answer'
 
 class CreateSurvey extends Component{
   constructor(){
@@ -25,30 +26,20 @@ class CreateSurvey extends Component{
     })
   }
 
-  deleteSurvey = (id) => {
-    axios.delete(`/api/deleteSurvey/${id}`).then( res => {
-      this.setState({
-        survey: res.data
-      })
+  deleteQuestion = (i) => {
+    let questions = this.state.survey.questions
+    let newQuestions = questions.splice(i, 1);
+    this.setState({
+      questions: newQuestions
     })
   }
 
-  // deleteQuestion = (id) => {
-  //   axios.delete(`/api/deleteQuestion/${id}`).then( res => {
-  //     this.setState({
-  //       questions: res.data
-  //     })
-  //   })
-  // }
-
-  // deleteAnswer = (id) => {
-  //   axios.delete(`/api/deleteAnswer/${id}`).then( res => {
-  //     this.setState({
-  //       answer: res.data
-  //     })
-  //   })
-  // }
-
+  deleteAnswer = (i, j) => {
+    let survey = this.state.survey
+    survey.questions[i].answers.splice(j, 1)
+    this.setState({survey})
+  }
+  
   updateSurveyName = ( val ) => {
     let survey = this.state.survey
     survey.surveyName = val
@@ -72,6 +63,7 @@ class CreateSurvey extends Component{
     let answers = survey.questions[i].answers
     answers.push({answer:""})
     this.setState({survey})
+    console.log(answers)
   }
 
   addQuestion = () => {
@@ -87,10 +79,14 @@ class CreateSurvey extends Component{
   buildAnswersJSX = (i) => {
     return this.state.survey.questions[i].answers.map((answer, j) => {
       return (
-        <div>
-          <input onChange={(e) => {this.updateAnswer(e.target.value, i, j)}} placeholder={"answer " + j + " for question " + i}/>
-          {/* <button onClick={() => this.deleteAnswer()}>Delete Answer</button> */}
-        </div>
+        <Answer 
+          key={j} 
+          answer={answer} 
+          j={j} 
+          i={i} 
+          updateAnswer={this.updateAnswer} 
+          deleteAnswer={this.deleteAnswer}
+        />
       )
     })
   }
@@ -98,8 +94,15 @@ class CreateSurvey extends Component{
   buildQuestionsJSX = () => {
     return this.state.survey.questions.map((question, i) => {
       return (
-        <Question key={i} question={question} i={i} buildAnswersJSX={this.buildAnswersJSX} addAnswer={this.addAnswer} updateAnswer={this.updateAnswer}  />
-        
+        <Question 
+          key={i} 
+          question={question} 
+          i={i} 
+          buildAnswersJSX={this.buildAnswersJSX} 
+          addAnswer={this.addAnswer} 
+          updateQuestion={this.updateQuestion} 
+          deleteQuestion={this.deleteQuestion}  
+        />
       )
     })
   }
@@ -110,10 +113,10 @@ class CreateSurvey extends Component{
       <div>
         <h1>CreateSurvey</h1>
         <input onChange={(e) => {this.updateSurveyName(e.target.value)}} placeholder="Survey Name"/>
-        <button onClick={this.newSurvey}>Create Survey</button>
-        <button onClick={() => this.deleteSurvey()}>Delete Survey</button>
         <button onClick={this.addQuestion}>Add Question</button>
+        <button onClick={this.deleteSurvey}>Delete Survey</button>
         {this.buildQuestionsJSX()}
+        <button onClick={this.newSurvey}>Finish Survey</button>
       </div>
     )
   }

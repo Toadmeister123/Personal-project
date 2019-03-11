@@ -30,6 +30,8 @@ app.use(sessions({
 massive(CONNECTION_STRING).then( db => {app.set('db', db)
   console.log(`db is connected`)
   app.listen( SERVER_PORT, () => console.log(`server running on ${SERVER_PORT}`))
+}).catch((err) => {
+  console.log(err)
 })
 
 //AUTH
@@ -39,7 +41,8 @@ app.post('/auth/logout', authctrl.logout)
 app.get('/api/current', authctrl.getUser)
 //API
 app.post('/api/createSurvey', apictrl.createSurvey)
-app.get('/api/getSurvey', apictrl.getSurvey)
+app.get('/api/getAllSurveys', apictrl.getAllSurveys)
 app.delete('/api/deleteSurvey/:id', apictrl.deleteSurvey)
-// app.delete('/api/deleteQuestion/:id', apictrl.deleteQuestion)
-// app.delete('/api/deleteAnswer/:id', apictrl.deleteAnswer)
+// app.get('/api/getSurvey', apictrl.getSurvey)
+app.delete('/api/deleteQuestion/:id', apictrl.deleteQuestion)
+app.delete('/api/deleteAnswer/:id', apictrl.deleteAnswer)

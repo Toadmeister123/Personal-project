@@ -1,1 +1,1 @@
-delete from questions where id = $1;
+delete from answers where id = $1;
