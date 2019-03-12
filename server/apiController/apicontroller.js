@@ -2,7 +2,10 @@ module.exports = {
   getAllSurveys: (req, res) => {
     const db = req.app.get('db')
 
-    db.api.get.get_all_surveys().then( response => {
+    db.api.get.get_all_surveys(req.session.user.id).then( response => {
+      for(let i=0; i<response.length; i++){
+        response[i] = response[i].row_to_json
+      }
       res.status(200).send(response)
     })
   },
@@ -11,7 +14,7 @@ module.exports = {
     const db = req.app.get('db')
     const { survey } = req.body
     let date = new Date()
-    db.api.create.create_survey([survey.surveyName, date]).then( surveyInsert => {
+    db.api.create.create_survey([survey.surveyName, date, req.session.user.id]).then( surveyInsert => {
       console.log(surveyInsert)
       for(let i=0; i<survey.questions.length; i++){
         db.api.create.create_question(survey.questions[i].question, surveyInsert[0].id).then( questionInsert => {

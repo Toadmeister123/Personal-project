@@ -27,19 +27,31 @@ class MySurveys extends Component{
   
     
   render(){
-    const mappedSurveys = this.state.surveys.map(survey => {
+    const mappedSurveys = this.state.surveys.map((survey) => {
       console.log(survey)
       return (
         <div key={survey.id}>
           <h1>{survey.survey_name}</h1>
-          <h3>Question: {survey.question}</h3>
-          <input value={survey.answer} type="checkbox" />
-          <p>{survey.answer}</p>
+          {survey.questions.map((question) => {
+            return (
+              <div key={question.id}>
+              <h3>Question: {survey.questions[0].question}</h3>
+              </div>
+              {survey.questions[0].answers.map(answer => {
+                return(
+                  <div>
+                  <input value={question.answer} type="checkbox" />
+                  <p>{answer.answer}</p>
+                  </div>
+                  )
+              
+              })}
+            })}
+            </div>
+          
           <button onClick={() => {this.deleteSurvey(survey.id)}}>Delete Survey</button>
-          <button onClick={() => {this.deleteQuestion(survey.id)}}>Delete Question</button>
-          <button onClick={() => {this.deleteAnswer(survey.id)}}>Delete Answer</button>
         </div>
-      )
+          )
     })
     return(
       <div>

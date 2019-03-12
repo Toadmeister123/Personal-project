@@ -48,8 +48,25 @@ values ($1, $2, $3)
 returning *
 
 
-select s.survey_name, q.question, a.answer, s.date
-from surveys s
-join questions q on s.id = q.survey_id
-join answers a on q.survey_id = a.survey_id
-order by date asc
+select row_to_json(s)
+from(
+  select id, survey_name,
+    (
+      select array_to_json(array_agg(row_to_json(q)))
+        from (
+          select question,
+            (
+              select array_to_json(array_agg(row_to_json(a)))
+                from(
+                  select answer
+                  from answers
+                  where question_id = questions.id
+                ) a 
+            ) as answers
+          from questions
+          where survey_id = surveys.id
+        ) q 
+    ) as questions
+  from surveys
+  where id = $1
+)s 

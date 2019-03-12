@@ -114,7 +114,6 @@ class CreateSurvey extends Component{
         <h1>CreateSurvey</h1>
         <input onChange={(e) => {this.updateSurveyName(e.target.value)}} placeholder="Survey Name"/>
         <button onClick={this.addQuestion}>Add Question</button>
-        <button onClick={this.deleteSurvey}>Delete Survey</button>
         {this.buildQuestionsJSX()}
         <button onClick={this.newSurvey}>Finish Survey</button>
       </div>

@@ -1,6 +1,27 @@
-select s.survey_name, s.id, q.question, a.answer, s.date
-from surveys s
-join questions q on s.id = q.survey_id
-join answers a on q.survey_id = a.survey_id
-group by s.id, q.question, a.answer
-order by date asc
+-- select s.user_id, u.id, s.survey_name
+-- from surveys s
+-- join users u 
+-- on s.user_id = u.id
+
+select row_to_json(s)
+from(
+  select id, survey_name,
+    (
+      select array_to_json(array_agg(row_to_json(q)))
+        from (
+          select question,
+            (
+              select array_to_json(array_agg(row_to_json(a)))
+                from(
+                  select id, answer
+                  from answers
+                  where question_id = questions.id
+                ) a 
+            ) as answers
+          from questions
+          where survey_id = surveys.id
+        ) q 
+    ) as questions
+  from surveys
+  -- where id = 72
+)s 
