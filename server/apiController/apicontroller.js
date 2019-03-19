@@ -27,7 +27,6 @@ module.exports = {
     const {id} = req.params
     const {surveyName} = req.body
     db.api.get.get_all_surveys(surveyName, id).then( response => {
-      console.log(response)
       res.status(200).send(response)
     })
   },
@@ -77,9 +76,7 @@ module.exports = {
   incrementTimesClicked: (req, res) => {
     const db = req.app.get('db')
     const {answers} = req.body
-    console.log(answers)
     for(const prop in answers) {
-      // console.log(`answers.${prop} = ${answers[prop]}`)
       let answer = answers[prop]
       db.api.update.increment_times_clicked([answer])
     }

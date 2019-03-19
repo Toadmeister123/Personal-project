@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import Modal from 'react-awesome-modal'
 import axios from 'axios'
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles'
+
 
 class TakeSurvey extends Component{
   constructor(props){
@@ -47,6 +50,7 @@ class TakeSurvey extends Component{
   }
   
   render(){
+    
     const mappedQuestions=  this.props.questions ? this.props.questions.map((question, i) => {
       
       return (
@@ -64,12 +68,12 @@ class TakeSurvey extends Component{
     return(
       <section>
         <h1>{this.props.surveyName.survey_name}</h1>
-        <input type="button" value="Take Survey" onClick={() => this.openModal()}/>
-        <Modal visible={this.state.visible} width="65%" height="90%" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-          <div>
+        <button onClick={() => this.openModal()}>TakeSurvey</button>
+        <Modal visible={this.state.visible}  width="400px" height="600px" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+          <div className="Modal">
             <h1>{this.props.surveyName.survey_name}</h1>
             {mappedQuestions}
-            <button onClick={() => this.finishSurvey()}>Finish</button>
+            <Button onClick={() => this.finishSurvey()}>Finish</Button>
           </div>
         </Modal>
       </section>
