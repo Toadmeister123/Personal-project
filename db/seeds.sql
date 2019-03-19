@@ -11,6 +11,7 @@ create table surveys (
     survey_name varchar(100),
     like_count integer,
     date integer,
+    responses int,
     user_id integer
 )
 
@@ -23,7 +24,8 @@ create table questions (
 create table answers (
     id serial primary key,
     answer text,
-    survey_id int
+    survey_id int,
+    times_clicked int,
     question_id
 )
 
@@ -35,8 +37,9 @@ CREATE TABLE "session" (
 WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
-insert into surveys (survey_name, date)
-values ($1, $2)
+insert into surveys (survey_name, date, user_id)
+values ($1, $2, $3)
+
 returning *
 
 insert into questions (question, survey_id)
@@ -58,7 +61,7 @@ from(
             (
               select array_to_json(array_agg(row_to_json(a)))
                 from(
-                  select answer
+                  select id, answer
                   from answers
                   where question_id = questions.id
                 ) a 
@@ -70,3 +73,38 @@ from(
   from surveys
   where id = $1
 )s 
+
+select row_to_json(s)
+from(
+  select id, survey_name,
+    (
+      select array_to_json(array_agg(row_to_json(q)))
+        from (
+          select question, id,
+            (
+              select array_to_json(array_agg(row_to_json(a)))
+                from(
+                  select id, answer
+                  from answers
+                  where question_id = questions.id
+                ) a 
+            ) as answers
+          from questions
+          where survey_id = surveys.id
+        ) q 
+    ) as questions
+  from surveys
+  where user_id = $1
+)s 
+
+delete from surveys 
+where id = $1;
+
+delete from questions 
+where survey_id = $1;
+
+delete from answers
+where survey_id = $1;
+
+select surveys.survey_name, surveys.id, surveys.responses
+from surveys;

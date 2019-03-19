@@ -19,12 +19,12 @@ module.exports = {
     }
     let salt = bcrypt.genSaltSync(10)
     let hash = bcrypt.hashSync(password, salt)
-    console.log(hash)
+    // console.log(hash)
     let user = await db.auth.sign_up({username, email, password: hash})
     user = user[0]
-    console.log({session})
+    // console.log({session})
     session.user = user
-    console.log(user)
+    // console.log(user)
     res.status(200).send(session.user)
   },
   login: async (req, res) => {
@@ -36,7 +36,7 @@ module.exports = {
     if(!user) {
       return res.sendStatus(401)
     }
-    console.log(user)
+    // console.log(user)
     let authenticated = bcrypt.compareSync(password, user.password)
     if(authenticated){
       delete user.password

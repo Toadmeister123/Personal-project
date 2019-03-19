@@ -63,7 +63,6 @@ class CreateSurvey extends Component{
     let answers = survey.questions[i].answers
     answers.push({answer:""})
     this.setState({survey})
-    console.log(answers)
   }
 
   addQuestion = () => {
@@ -108,7 +107,7 @@ class CreateSurvey extends Component{
   }
 
   render(){
-    console.log(this.state.survey)
+    // console.log(this.state.survey)
     return(
       <div>
         <h1>CreateSurvey</h1>
