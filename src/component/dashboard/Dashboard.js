@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import {clearUser, updateUser} from '../../ducks/reducer'
 import TakeSurvey from '../take_survey/TakeSurvey'
 
-
 class Dashboard extends Component{
   constructor(props){
     super(props)

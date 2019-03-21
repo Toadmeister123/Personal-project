@@ -86,7 +86,7 @@ class MySurveys extends Component{
               {survey.questions[i].answers.map((answer,i) => {
                 return(
                   <div key={answer.id}>
-                  <input value={question.answer} type="checkbox" />
+                  {/* <input value={question.answer} type="checkbox" /> */}
                   <p>{answer.answer}</p>
             </div>)})}
           </div>)})}

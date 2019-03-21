@@ -3,7 +3,16 @@ import Modal from 'react-awesome-modal'
 import axios from 'axios'
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles'
+import propTypes from 'prop-types'
 
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+  button: {
+    margin: theme.spacing.unit,
+  }
+})
 
 class TakeSurvey extends Component{
   constructor(props){
@@ -49,10 +58,9 @@ class TakeSurvey extends Component{
     })
   }
   
-  render(){
-    
+  render(){ 
+    const {classes} = this.props
     const mappedQuestions=  this.props.questions ? this.props.questions.map((question, i) => {
-      
       return (
         <div key={question.id}>
           <h3>{question.question}</h3>
@@ -69,11 +77,11 @@ class TakeSurvey extends Component{
       <section>
         <h1>{this.props.surveyName.survey_name}</h1>
         <button onClick={() => this.openModal()}>TakeSurvey</button>
-        <Modal visible={this.state.visible}  width="400px" height="600px" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-          <div className="Modal">
+        <Modal visible={this.state.visible}   width="400px" height="600px" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+          <div className="" style={{overflowY: 'auto', height: '600px'}}>
             <h1>{this.props.surveyName.survey_name}</h1>
             {mappedQuestions}
-            <Button onClick={() => this.finishSurvey()}>Finish</Button>
+            <Button color="primary" variant="contained" className={classes.button} onClick={() => this.finishSurvey()}>Finish</Button>
           </div>
         </Modal>
       </section>
@@ -81,4 +89,8 @@ class TakeSurvey extends Component{
   }
 }
 
-export default TakeSurvey;
+TakeSurvey.propTypes = {
+  classes: propTypes.object.isRequired
+}
+
+export default withStyles(styles)(TakeSurvey);

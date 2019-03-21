@@ -2,11 +2,24 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import Question from '../question/Question'
 import Answer from '../answer/Answer'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input'
+
+const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit,
+  },
+  input: {
+    margin: theme.spacing.unit
+  }
+})
 
 
 class CreateSurvey extends Component{
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       survey: {
         surveyName: "",
@@ -108,18 +121,21 @@ class CreateSurvey extends Component{
   }
 
   render(){
-    // console.log(this.state.survey)
+    const { classes } = this.props
     return(
       <div>
         <h1>CreateSurvey</h1>
-        <input onChange={(e) => {this.updateSurveyName(e.target.value)}} placeholder="Survey Name"/>
-        <button onClick={this.addQuestion}>Add Question</button>
+        <Input onChange={(e) => {this.updateSurveyName(e.target.value)}} placeholder="Survey Name" className={classes.input}/>
+        <Button size="medium" color="secondary" className={classes.margin} onClick={this.addQuestion}>Add Question</Button>
         {this.buildQuestionsJSX()}
-        <button onClick={this.newSurvey}>Finish Survey</button>
+        <Button size="medium" color="secondary" className={classes.margin} onClick={this.newSurvey}>Finish Survey</Button>
       </div>
     )
   }
 }
 
+CreateSurvey.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
 
-export default CreateSurvey
+export default withStyles(styles)(CreateSurvey);
