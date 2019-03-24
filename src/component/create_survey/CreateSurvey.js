@@ -13,7 +13,11 @@ const styles = theme => ({
   },
   input: {
     margin: theme.spacing.unit
-  }
+  },
+  root: {
+    height: '300vh',
+    backgroundColor: theme.palette.primary.light,
+  },
 })
 
 
@@ -123,12 +127,12 @@ class CreateSurvey extends Component{
   render(){
     const { classes } = this.props
     return(
-      <div>
-        <h1>CreateSurvey</h1>
+      <div className={classes.root}>
+        {/* <h1>CreateSurvey</h1> */}
         <Input onChange={(e) => {this.updateSurveyName(e.target.value)}} placeholder="Survey Name" className={classes.input}/>
-        <Button size="medium" color="secondary" className={classes.margin} onClick={this.addQuestion}>Add Question</Button>
+        <Button size="medium" color="primary" variant="contained" className={classes.margin} onClick={this.addQuestion}>Add Question</Button>
         {this.buildQuestionsJSX()}
-        <Button size="medium" color="secondary" className={classes.margin} onClick={this.newSurvey}>Finish Survey</Button>
+        <Button size="medium" color="primary" variant="contained" className={classes.margin} onClick={this.newSurvey}>Finish Survey</Button>
       </div>
     )
   }

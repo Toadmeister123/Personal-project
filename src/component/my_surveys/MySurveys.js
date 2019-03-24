@@ -1,7 +1,32 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Input from '@material-ui/core/Input'
+import Typography from '@material-ui/core/Typography'
 
+
+const styles = theme => ({
+  root: {
+    height: '100%',
+    backgroundColor: theme.palette.primary.light,
+  },
+  margin: {
+    margin: 4
+  },
+  question: {
+    backgroundColor: '#fff',
+    margin: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxShadow: '5px 5px 5px black',
+    borderRadius: 10,
+  }
+})
 
 class MySurveys extends Component{
   constructor(){
@@ -33,7 +58,6 @@ class MySurveys extends Component{
 
   getAllUserSurveys(){
     axios.get('/api/getAllUserSurveys').then( res => {
-      // console.log(res)
       this.setState({
         surveys: res.data,
         editing: false
@@ -57,48 +81,51 @@ class MySurveys extends Component{
   }
     
   render(){
+    const {classes} = this.props
     const mappedSurveys = this.state.surveys.map((survey) => {
-      // console.log(survey)
       return (
         <div key={survey.id}>
         {this.state.editing ? (
           <div>
-          <input 
+          <Input 
             type="text"
+            placeholder="Survey"
             value={this.state.surveyName}
             onChange={(e) => {this.handleSurveyName(e.target.value)}}
             />
             </div>
         ) : (
-        <h1>Title:{survey.survey_name}</h1>
+        <Typography variant="h4" style={{margin: "0"}}>{survey.survey_name}</Typography>
         )}
-          <button onClick={() => {this.deleteSurvey(survey.id)}}>Delete Survey</button>
+          <Button variant="contained" color="primary" size="small" className={classes.margin} onClick={() => {this.deleteSurvey(survey.id)}}>Delete Survey</Button>
           {this.state.editing ? (
-            <button onClick={() => {this.updateSurvey(survey.id)}}>Save Name</button>
+            <Button variant="contained" color="primary" size="small" className={classes.margin} onClick={() => {this.updateSurvey(survey.id)}}>Save Name</Button>
           ) : (
-            <button onClick={() => {this.setEdit()}}>Edit Name</button>
+            <Button variant="contained" color="primary" size="small" className={classes.margin} onClick={() => {this.setEdit()}}>Edit Name</Button>
           )}
-         <Link to="/surveyanalytics"><button>Survey Analysis</button></Link>
+         <Link style={{ textDecoration: 'none'}} to={`/surveyanalytics/${survey.id}`}><Button variant="contained" color="primary" size="small"  className={classes.margin} >Survey Analysis</Button></Link>
           {survey.questions.map((question, i) => {
             return (
-              <div key={question.id}>
-                <h3>Question: {survey.questions[i].question}</h3>
+              <div key={question.id} className={classes.question}>
+                <Typography variant="h5" >{survey.questions[i].question}</Typography>
               {survey.questions[i].answers.map((answer,i) => {
                 return(
-                  <div key={answer.id}>
-                  {/* <input value={question.answer} type="checkbox" /> */}
-                  <p>{answer.answer}</p>
+                  <div key={answer.id} >
+                  <Typography variant="h6">{answer.answer}</Typography>
             </div>)})}
           </div>)})}
         </div>)})
     return(
-      <div>
-        <h1>MySurveys</h1>
+      <div className={classes.root} style={{margin: '0'}}>
         {mappedSurveys}
       </div>
     )
   }
 }
 
+MySurveys.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
 
-export default MySurveys;
+
+export default withStyles(styles)(MySurveys);

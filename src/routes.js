@@ -8,7 +8,7 @@ import Analysis from './component/analysis/Analysis'
 
 export default (
   <Switch>
-      <Route path="/surveyanalytics" component={Analysis} />
+      <Route path="/surveyanalytics/:id" component={Analysis} />
       <Route path="/createsurvey" component={CreateSurvey} />
       <Route path="/mysurveys" component={MySurveys} />
       <Route path="/dashboard" component={Dashboard} />

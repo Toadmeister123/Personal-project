@@ -1,0 +1,27 @@
+.Modal{
+  overflow-y: auto;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Questions{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.Answers{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.checkbox{
+  width: 17px;
+  height: 17px;
+  color: red;
+}
+

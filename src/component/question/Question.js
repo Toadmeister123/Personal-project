@@ -6,15 +6,24 @@ import Icon from '@material-ui/core/Icon'
 import indigo from '@material-ui/core/colors/indigo'
 
 const styles = theme => ({
+  root: {
+    backgroundColor: 'white',
+    margin: 60,
+    padding: -20,
+    borderRadius: 20,
+    boxShadow: '2px 2px 2px black'
+  },
+  root2: {
+  },
   input: {
     margin: theme.spacing.unit
   },
-  icon : {
-    margin: theme.spacing.unit,
+  icon: {
+    margin: 2,
     '&:hover' : {
       color: indigo[800],
     },
-  },
+  }
 })
 
 class Question extends Component{
@@ -22,11 +31,13 @@ class Question extends Component{
   render(){
     const {i, classes} = this.props
     return(
-      <div>
-          <Input className={classes.input} placeholder={"question" + i} onChange={(e) => {this.props.updateQuestion(e.target.value, i)}} />
+      <div className={classes.root}>
+          <Input className={classes.input} placeholder={"question " + i} onChange={(e) => {this.props.updateQuestion(e.target.value, i)}} />
           <Icon className={classes.icon} color="primary" onClick={() => this.props.addAnswer(i)}>add_circle</Icon>
           <Icon className={classes.icon} color="primary" onClick={() => {this.props.deleteQuestion(i)}}>delete</Icon>
-          {this.props.buildAnswersJSX(i)}
+          <div className={classes.root2}>
+            {this.props.buildAnswersJSX(i)}
+          </div>
         </div>
     )
   }

@@ -3,6 +3,26 @@ import axios from 'axios';
 import {connect} from 'react-redux'
 import {clearUser, updateUser} from '../../ducks/reducer'
 import TakeSurvey from '../take_survey/TakeSurvey'
+// import Nav from '../nav/Nav'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+
+const styles = theme => ({
+  root: {
+    height: '100vh',
+    backgroundColor: theme.palette.primary.light,
+  },
+  root2: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  margin: {
+    margin: theme.spacing.unit,
+  },
+})
 
 class Dashboard extends Component{
   constructor(props){
@@ -64,7 +84,7 @@ class Dashboard extends Component{
   }
 
   render(){
-    console.log(this.state)
+    const {classes} = this.props
     const mappedSurveyName = this.state.surveyNames.map((surveyName) => {
       return (
         <TakeSurvey 
@@ -80,10 +100,13 @@ class Dashboard extends Component{
       )
     })
     return(
-      <div>
-        <h1>Dashboard</h1>
-        <button onClick={this.logout}>logout</button>
-        {mappedSurveyName}
+      <div className={classes.root}>
+      {/* <Nav logout={this.logout}/> */}
+        {/* <h1 style={{margin: 0}}>Dashboard</h1> */}
+        <Button variant="contained" color="secondary" onClick={this.logout}>logout</Button>
+        <div className={classes.root2}>
+          {mappedSurveyName}
+        </div>
       </div>
     )
   }
@@ -97,4 +120,8 @@ const mapDispatchToProps = {
   clearUser
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+Dashboard.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard))

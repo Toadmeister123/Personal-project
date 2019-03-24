@@ -80,5 +80,16 @@ module.exports = {
       let answer = answers[prop]
       db.api.update.increment_times_clicked([answer])
     }
+  },
+  getSurveyAnalysis: (req, res) => {
+    const db = req.app.get('db')
+    req.params.id = parseInt(req.params.id)
+    const {id} = req.params
+    db.api.get.get_survey_analysis([id]).then(response => {
+      for(let i=0; i<response.length; i++){
+        response[i] = response[i].row_to_json
+      }
+      res.status(200).send(response)
+    })
   }
 }
