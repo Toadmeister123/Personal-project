@@ -7,7 +7,8 @@ import indigo from '@material-ui/core/colors/indigo'
 
 const styles = theme => ({
   input: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    width: '60%',
   },
   icon : {
     margin: theme.spacing.unit,

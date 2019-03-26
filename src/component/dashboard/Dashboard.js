@@ -49,11 +49,12 @@ class Dashboard extends Component{
       this.props.history.push('/dashboard')
     }
   }
-  logout = async() => {
-    await axios.post('/auth/logout')
-    this.props.clearUser()
-    this.props.history.push('/')
-  }
+
+  // logout = async() => {
+  //   await axios.post('/auth/logout')
+  //   this.props.clearUser()
+  //   this.props.history.push('/')
+  // }
 
   getAllSurveys = () => {
     axios.get('/api/getAllSurveys').then(res => {
@@ -103,7 +104,7 @@ class Dashboard extends Component{
       <div className={classes.root}>
       {/* <Nav logout={this.logout}/> */}
         {/* <h1 style={{margin: 0}}>Dashboard</h1> */}
-        <Button variant="contained" color="secondary" onClick={this.logout}>logout</Button>
+        {/* <Button variant="contained" color="secondary" onClick={this.logout}>logout</Button> */}
         <div className={classes.root2}>
           {mappedSurveyName}
         </div>

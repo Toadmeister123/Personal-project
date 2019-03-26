@@ -3,12 +3,21 @@ import axios from 'axios'
 import {Pie} from 'react-chartjs-2'
 import propTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
   root: {
-    height: '100vh',
-    backgroundColor: theme.palette.primary.light,
+    height: '100%',
+    width: '100%',
     margin: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  graph: {
+    height: '100%',
+    width: '70vw',
+    margin: 30,
   }
 })
 
@@ -32,9 +41,9 @@ class Analysis extends Component {
           label: question.question,
           backgroundColor: ['#f44336', '#2196f3', '#ffeb3b', '#4caf50'],
           borderColor: '#000',
-          borderWidth: 3,
+          borderWidth: 1,
           hoverBackgroundColor: ['#ef9a9a', '#90caf9', '#fff59d', '#a5d6a7'],
-          data: []
+          data: [],
         }]
         question.answers.forEach(answer=>{
           question.chartData.labels.push(answer.answer)
@@ -53,23 +62,25 @@ class Analysis extends Component {
     const mappedCharts = this.state.beforeData.map((survey, i) => {
         console.log('hit')
         return(
-          <div key={survey.id}>
+          <div key={survey.id} >
             {survey.questions.map((question, i) => {
               return(
-                <div key={question.id}>
-                <Pie data={question.chartData} options={{scales: {yAxes: [{ticks: {beginAtZero: true}}]}}}/>
-                </div>
-              )
-            })}
-          </div>
-        )
-    })
+                <div key={question.id} className={classes.graph}>
+                  <Pie 
+                    className={classes.graph} 
+                    data={question.chartData} 
+                    options={{legend: {display: true, position: 'left'}, scales: {yAxes: [{display: false, gridLines: {display: false, tick: { display: false}}}]}, xAxes: [{ gridLines: {display: false, tick: { display: false}}}]}}
+                  />
+                </div>)})}
+          </div>)})
     return(
-      <main >
-      {console.log(this.state.beforeData.responses)}
-      <h1>{this.state.beforeData.survey_name}</h1>
-        {mappedCharts}
-      </main>
+      <div>
+        {this.state.beforeData.length && <Typography variant="h5" >Responses: {this.state.beforeData[0].responses}</Typography>}
+        <div className={classes.root} >
+
+          {mappedCharts}
+        </div>
+      </div>
     )
   }
 }

@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {clearUser, updateUser} from '../../ducks/reducer'
+import {clearUser} from '../../ducks/reducer'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
+import { withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 const styles = theme => ({
   root: {
@@ -35,6 +37,12 @@ class Nav extends Component{
     this.state = {
       open: false
     }
+  }
+  
+  logout = async() => {
+    await axios.post('/auth/logout')
+    this.props.clearUser()
+    this.props.history.push('/')
   }
 
   render() {
@@ -70,5 +78,5 @@ const mapDispatchToProps = {
   classes: PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Nav))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Nav)))
 

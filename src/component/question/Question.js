@@ -16,7 +16,9 @@ const styles = theme => ({
   root2: {
   },
   input: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    width: '40%',
+
   },
   icon: {
     margin: 2,

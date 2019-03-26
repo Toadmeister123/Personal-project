@@ -12,11 +12,13 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   input: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    // width: '40%',
   },
   root: {
     height: '300vh',
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: '#e3f2fd',
+    backgroundSize: 'cover'
   },
 })
 
